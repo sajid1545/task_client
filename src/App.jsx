@@ -18,7 +18,7 @@ function App() {
 		isLoading,
 	} = useQuery({
 		queryKey: ['informations'],
-		queryFn: () => fetch('http://localhost:5000/info').then((res) => res.json()),
+		queryFn: () => fetch('https://server-lake-pi.vercel.app/info').then((res) => res.json()),
 	});
 
 	if (isLoading) {
@@ -35,7 +35,7 @@ function App() {
 			Hobbies: data.hobbies,
 		};
 
-		fetch('http://localhost:5000/info', {
+		fetch('https://server-lake-pi.vercel.app/info', {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify(information),
@@ -64,7 +64,7 @@ function App() {
 	// Send Email
 
 	const handleEmail = (info) => {
-		fetch('http://localhost:5000/send-email', {
+		fetch('https://server-lake-pi.vercel.app/send-email', {
 			method: 'POST',
 			headers: { 'content-type': 'application/json' },
 			body: JSON.stringify(info),
@@ -75,9 +75,7 @@ function App() {
 
 	// update info
 	const handleDelete = (info) => {
-		console.log(info);
-
-		fetch(`http://localhost:5000/info/${info._id}`, {
+		fetch(`https://server-lake-pi.vercel.app/info/${info._id}`, {
 			method: 'DELETE',
 		})
 			.then((res) => res.json())
