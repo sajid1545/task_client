@@ -68,9 +68,25 @@ function App() {
 			method: 'POST',
 			headers: { 'content-type': 'application/json' },
 			body: JSON.stringify(info),
-    });
-    
-    toast('Email sent successfully')
+		});
+
+		toast('Email sent successfully');
+	};
+
+	// update info
+	const handleDelete = (info) => {
+		console.log(info);
+
+		fetch(`http://localhost:5000/info/${info._id}`, {
+			method: 'DELETE',
+		})
+			.then((res) => res.json())
+			.then((data) => {
+				if (data.deletedCount > 0) {
+					toast.success('Deleted successfully');
+					refetch();
+				}
+			});
 	};
 
 	return (
@@ -150,7 +166,13 @@ function App() {
 					</thead>
 					<tbody>
 						{informations.map((info, index) => (
-							<TableRow key={info._id} index={index} info={info} handleEmail={handleEmail} />
+							<TableRow
+								key={info._id}
+								index={index}
+								info={info}
+								handleEmail={handleEmail}
+								handleDelete={handleDelete}
+							/>
 						))}
 					</tbody>
 				</table>
