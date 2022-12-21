@@ -1,12 +1,22 @@
+import { useQuery } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import './App.css';
 
 function App() {
 	const {
 		register,
 		formState: { errors },
-		handleSubmit,
-	} = useForm();
+    handleSubmit,
+    reset,
+  } = useForm();
+  
+
+  const { } = useQuery({
+    queryKey: [],
+    // queryFn: 
+  })
+
 
 	const handleAddData = (data) => {
 		console.log(data);
@@ -25,13 +35,28 @@ function App() {
 		})
 			.then((res) => res.json())
 			.then((data) => {
+				if (data.acknowledged) {
+					toast.success('🦄 Info added successfully!', {
+						position: 'top-center',
+						autoClose: 4000,
+						hideProgressBar: false,
+						closeOnClick: true,
+						pauseOnHover: true,
+						draggable: true,
+						progress: undefined,
+						theme: 'dark',
+          });
+          
+          reset()
+				}
 				console.log(data);
 			});
 	};
 
 	return (
-    <div className="App">
+		<div className="App">
       {/* form */}
+      <h1 className='text-5xl my-4 font-extrabold'>Lets get to know Each other</h1>
 			<div className="flex items-center justify-center text-center bg-gray-900 text-gray-100">
 				<form
 					onSubmit={handleSubmit(handleAddData)}
@@ -66,7 +91,12 @@ function App() {
 						Save
 					</button>
 				</form>
-			</div>
+      </div>
+      
+      {/* table */}
+
+
+
 		</div>
 	);
 }
