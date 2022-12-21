@@ -1,8 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import './App.css';
 import TableRow from './Components/TableRow';
+import UpdateModal from './Components/UpdateModal';
 
 function App() {
 	const {
@@ -11,6 +13,8 @@ function App() {
 		handleSubmit,
 		reset,
 	} = useForm();
+
+	const [updateInfo, setUpdateInfo] = useState(null);
 
 	const {
 		data: informations = [],
@@ -23,7 +27,9 @@ function App() {
 
 	if (isLoading) {
 		return (
-			<div className="w-16 h-16 mx-auto border-4 border-dashed rounded-full animate-spin border-violet-800"></div>
+			<div className="flex justify-center items-center h-screen">
+				<div className="w-16 h-16 mx-auto flex border-4 border-dashed rounded-full animate-spin border-violet-800"></div>
+			</div>
 		);
 	}
 
@@ -57,7 +63,6 @@ function App() {
 
 					reset();
 				}
-				console.log(data);
 			});
 	};
 
@@ -73,7 +78,7 @@ function App() {
 		toast('Email sent successfully');
 	};
 
-	// update info
+	// delete info
 	const handleDelete = (info) => {
 		fetch(`https://server-lake-pi.vercel.app/info/${info._id}`, {
 			method: 'DELETE',
@@ -170,11 +175,14 @@ function App() {
 								info={info}
 								handleEmail={handleEmail}
 								handleDelete={handleDelete}
+								setUpdateInfo={setUpdateInfo}
 							/>
 						))}
 					</tbody>
 				</table>
 			</div>
+
+			{updateInfo && <UpdateModal updateInfo={updateInfo} setUpdateInfo = {setUpdateInfo} refetch = {refetch} />}
 		</div>
 	);
 }
